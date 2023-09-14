@@ -13,7 +13,7 @@ Please upload your completed assignment to the ELMs course site (under the assig
 
 **Total points: 25**
 
-## Question 1
+## ?gQuestion 1
 
 *Points: 5*
 
@@ -22,6 +22,22 @@ Using the `gss` dataset (which has survey data with the individual respondent as
 ::: callout-note
 The `gss` dataset can be found in `poliscidata::gss`. Take a look at `?gss` to see what these variables measure.
 :::
+
+#frequency distribution code
+
+```{r}
+library(poliscidata)
+freq(gss$degree)
+freq(gss$partyid_3)
+```
+
+#bar chart code
+
+ggplot(gss, aes(x=partyid_3)) + geom_bar(mapping=aes(colour=partyid_3, fill=partyid_3)) + labs(x= "Party Affiliations", y="Frequency", title="Level of Party ID in GSS Data")
+
+su
+
+
 
 Hello!
 
@@ -44,6 +60,19 @@ iq <- c(
 
 Find the five-number summary, mean, and standard deviation for these data. Also, are there any suspected outliers in the distribution? If so, what are they and how do you know?
 
+```{r}
+summary(iq)
+sd(iq)
+```
+
+summary(iq)
+
+#the standard deviation
+
+sd(iq)
+
+#the suspected outliers could be the maximum (145) and minimum (80) values above/below the mean or any other numbers that close to these values. We know it from the fact that the median and mean values are not really far from each other and the standard deviation is quite high.
+
 ### Part B
 
 *Points: 5*
@@ -56,6 +85,16 @@ In large populations, IQ scores are standardized to have a mean of 100 and a sta
 
 A polling firm is interested in determining how different characteristics of an individual affect vote choice. They record the following characteristics for each survey respondent - race, age, household income, and party affiliation. What "type" of variable does each characteristic most likely represent?
 
+#Types of variable
+
+race: categorical (nominal)
+
+age: continuous
+
+household income: continuous
+
+party affiliation: categorical (nominal or ordinal such as likert scale could work too)
+
 ## Question 4
 
 *Points: 5*
@@ -65,3 +104,13 @@ Using the `states` dataset (the unit of analysis is each U.S. state), generate a
 ::: callout-note
 The `states` data set can be found in `poliscidata::states`. Take a look at `?states` to see what these variables measure.
 :::
+
+#boxplot
+
+```{r}
+boxplot(states$vep12_turnout)
+plot(density(states$vep12_turnout))
+
+boxplot(states$cig_tax12)
+plot(density(states$cig_tax12))
+```
