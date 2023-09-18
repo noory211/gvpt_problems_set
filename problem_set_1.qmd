@@ -93,7 +93,7 @@ age: continuous
 
 household income: continuous
 
-party affiliation: categorical (nominal or ordinal such as likert scale could work too)
+party affiliation: categorical (nominal or ordinal such as likert scale could work too - very weak democrat, weak democrat, democrat, strong democrat, very strong democrat, etc.)
 
 ## Question 4
 
