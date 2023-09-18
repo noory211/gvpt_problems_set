@@ -37,8 +37,6 @@ ggplot(gss, aes(x=partyid_3)) + geom_bar(mapping=aes(colour=partyid_3, fill=part
 
 su
 
-
-
 Hello!
 
 ## Question 2
