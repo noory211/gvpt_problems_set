@@ -27,17 +27,29 @@ The `gss` dataset can be found in `poliscidata::gss`. Take a look at `?gss` to s
 
 ```{r}
 library(poliscidata)
-freq(gss$degree)
-freq(gss$partyid_3)
+library(gss)
+library(skimr)
+library(tidyverse)
+library(ggplot2)
+
+ggplot(gss,aes(x = partyid_3))+
+geom_bar()+
+labs(x = "Party Affiliation", y="Freq", title="Respondents Party ID")
+
+freq(gss$partyid_3, plot = F)
 ```
 
-#bar chart code
+The distribution is rather evenly spread out among those identified as "Independent" (38.7%) and Democrat (35.4%), followed by those identified as "Republican (22.3%). A small chunk of respondents (3.4%) are not affiliated with the mentioned party identification.
 
-ggplot(gss, aes(x=partyid_3)) + geom_bar(mapping=aes(colour=partyid_3, fill=partyid_3)) + labs(x= "Party Affiliations", y="Frequency", title="Level of Party ID in GSS Data")
+```{r}
+ggplot(gss, aes(x = degree))+
+geom_bar()+
+labs(x = "Education Level", y="Freq", title="Respondents Education Level")
 
-su
+freq(gss$degree, plot = F)
+```
 
-Hello!
+The responses are dominated by high school graduates 49.4%, followed by bachelor degree (17.9%), less than high school (14.5%), graduate degree (10.3%), and junior college (7.6%), respectively. Compared to the partyid_3 variable, this variable is much more concentrated as it falls mostly under high school degree.
 
 ## Question 2
 
@@ -59,23 +71,20 @@ iq <- c(
 Find the five-number summary, mean, and standard deviation for these data. Also, are there any suspected outliers in the distribution? If so, what are they and how do you know?
 
 ```{r}
-summary(iq)
-sd(iq)
+library(skimr)
+skimr::skim(iq)
+boxplot(iq)
 ```
 
-summary(iq)
-
-#the standard deviation
-
-sd(iq)
-
-#the suspected outliers could be the maximum (145) and minimum (80) values above/below the mean or any other numbers that close to these values. We know it from the fact that the median and mean values are not really far from each other and the standard deviation is quite high.
+There are no suspected outliers as can be found in the boxplot.
 
 ### Part B
 
 *Points: 5*
 
 In large populations, IQ scores are standardized to have a mean of 100 and a standard deviation of 15. In what way does the distribution among these students differ from the overall population?
+
+The IQ scores in the overall populations (114.98) are higher than in the large populations (100). The standard deviation of the overall population (14.8) is slightly less than the large population (15). This indicates that the data of overall population is slightly less spread out compared to the large population.
 
 ## Question 3
 
@@ -91,7 +100,7 @@ age: continuous
 
 household income: continuous
 
-party affiliation: categorical (nominal or ordinal such as likert scale could work too - very weak democrat, weak democrat, democrat, strong democrat, very strong democrat, etc.)
+party affiliation: categorical (It depends on how you use it, it could be measured as nominal, but it could also be ordinal if you use the Likert scale - very weak democrat, weak democrat, democrat, strong democrat, very strong democrat, etc.)
 
 ## Question 4
 
@@ -108,7 +117,13 @@ The `states` data set can be found in `poliscidata::states`. Take a look at `?st
 ```{r}
 boxplot(states$vep12_turnout)
 plot(density(states$vep12_turnout))
+```
 
+The data for the vep12_turnout is symmetrical distribution. And the boxplot shows no outliers.
+
+```{r}
 boxplot(states$cig_tax12)
 plot(density(states$cig_tax12))
 ```
+
+The density plot of cig_tax12 variable is positively skewed. And the boxplot shows an outlier.
