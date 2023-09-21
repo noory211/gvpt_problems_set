@@ -1,0 +1,162 @@
+---
+title: "Problem Set 1"
+subtitle: "Due date: 18 September"
+format: 
+  html:
+    self-contained: true
+editor: visual
+execute: 
+  echo: true
+---
+
+Please upload your completed assignment to the ELMs course site (under the assignments menu). Remember to include an annotated script file for all work with R and show your math for all other problems (if applicable, or necessary). Please also upload your completed assignment to the Github repository that you have shared with us. *We should be able to run your script with no errors.*
+
+**Total points: 25**
+
+::: {.callout-tip title="HG comments"}
+Well done! 24/25.
+:::
+
+## ?gQuestion 1
+
+*Points: 5*
+
+::: {.callout-tip title="HG comments"}
+Correct. 5/5.
+:::
+
+Using the `gss` dataset (which has survey data with the individual respondent as the unit of analysis), create a frequency distribution and bar chart for each of the following variables: `degree` and `partyid_3`. Describe the distribution of each variable in detail.
+
+::: callout-note
+The `gss` dataset can be found in `poliscidata::gss`. Take a look at `?gss` to see what these variables measure.
+:::
+
+#frequency distribution code
+
+```{r}
+library(poliscidata)
+library(gss)
+library(skimr)
+library(tidyverse)
+library(ggplot2)
+
+ggplot(gss,aes(x = partyid_3))+
+geom_bar()+
+labs(x = "Party Affiliation", y="Freq", title="Respondents Party ID")
+
+freq(gss$partyid_3, plot = F)
+```
+
+The distribution is rather evenly spread out among those identified as "Independent" (38.7%) and Democrat (35.4%), followed by those identified as "Republican (22.3%). A small chunk of respondents (3.4%) are not affiliated with the mentioned party identification.
+
+```{r}
+ggplot(gss, aes(x = degree))+
+geom_bar()+
+labs(x = "Education Level", y="Freq", title="Respondents Education Level")
+
+freq(gss$degree, plot = F)
+```
+
+The responses are dominated by high school graduates 49.4%, followed by bachelor degree (17.9%), less than high school (14.5%), graduate degree (10.3%), and junior college (7.6%), respectively. Compared to the partyid_3 variable, this variable is much more concentrated as it falls mostly under high school degree.
+
+## Question 2
+
+Examine the following vector of (fake) student IQ test scores:
+
+```{r}
+iq <- c(
+  145, 139, 126, 122, 125, 130, 96, 110, 118, 118, 101, 142, 134, 124, 112, 109, 
+  134, 113, 81, 113, 123, 94, 100, 136, 109, 131, 117, 110, 127, 124, 106, 124, 
+  115, 133, 116, 102, 127, 117, 109, 137, 117, 90, 103, 114, 139, 101, 122, 105, 
+  97, 89, 102, 108, 110, 128, 114, 112, 114, 102, 82, 101
+)
+```
+
+### Part A
+
+*Points: 5*
+
+::: {.callout-tip title="HG comments"}
+Good. 4/5.
+:::
+
+Find the five-number summary, mean, and standard deviation for these data. Also, are there any suspected outliers in the distribution? If so, what are they and how do you know?
+
+```{r}
+library(skimr)
+skimr::skim(iq)
+boxplot(iq)
+```
+
+::: {.callout-tip title="HG comments"}
+Just an R tip: you only need one of either `library(skimr)` or `skimr::function()`. The first option loads that package so that you can use all of its functions throughout your script. The second option does not load the entire package for you to use in your script. You need to explicitly call the package and the function any time you want to use them.  
+:::
+
+
+There are no suspected outliers as can be found in the boxplot.
+
+::: {.callout-tip title="HG comments"}
+Correct, but we need more information on how you know this. For example, you can look at data points that fall outside of 1.5 times the interquartile range from the median.
+:::
+
+### Part B
+
+*Points: 5*
+
+::: {.callout-tip title="HG comments"}
+Correct. 5/5.
+:::
+
+In large populations, IQ scores are standardized to have a mean of 100 and a standard deviation of 15. In what way does the distribution among these students differ from the overall population?
+
+The IQ scores in the overall populations (114.98) are higher than in the large populations (100). The standard deviation of the overall population (14.8) is slightly less than the large population (15). This indicates that the data of overall population is slightly less spread out compared to the large population.
+
+## Question 3
+
+*Points: 5*
+
+::: {.callout-tip title="HG comments"}
+Correct. 5/5.
+:::
+
+A polling firm is interested in determining how different characteristics of an individual affect vote choice. They record the following characteristics for each survey respondent - race, age, household income, and party affiliation. What "type" of variable does each characteristic most likely represent?
+
+#Types of variable
+
+race: categorical (nominal)
+
+age: continuous
+
+household income: continuous
+
+party affiliation: categorical (It depends on how you use it, it could be measured as nominal, but it could also be ordinal if you use the Likert scale - very weak democrat, weak democrat, democrat, strong democrat, very strong democrat, etc.)
+
+## Question 4
+
+*Points: 5*
+
+::: {.callout-tip title="HG comments"}
+Correct. 5/5.
+:::
+
+Using the `states` dataset (the unit of analysis is each U.S. state), generate a box plot and density curve for each of the `vep12_turnout` and `cig_tax12` variables. Describe the distribution of each variable in detail.
+
+::: callout-note
+The `states` data set can be found in `poliscidata::states`. Take a look at `?states` to see what these variables measure.
+:::
+
+#boxplot
+
+```{r}
+boxplot(states$vep12_turnout)
+plot(density(states$vep12_turnout))
+```
+
+The data for the vep12_turnout is symmetrical distribution. And the boxplot shows no outliers.
+
+```{r}
+boxplot(states$cig_tax12)
+plot(density(states$cig_tax12))
+```
+
+The density plot of cig_tax12 variable is positively skewed. And the boxplot shows an outlier.
