@@ -26,13 +26,55 @@ Using the `states` data, produce a scatterplot of the variables `womleg_2015` an
 The `states` data set can be found in `poliscidata::states`. Take a look at `?states` to see what these variables measure.
 :::
 
-## Question 2
+```{r}
+library(tidyverse)
+library(wbstats)
+library(poliscidata)
+library(countrycode)
+library(broom)
+library(janitor)
+library(ggridges)
+library(modelsummary)
+library(ggplot2)
+library(dplyr)
+```
+
+```{r}
+ggplot(states, mapping=aes(x=libpct_m, y=womleg_2015)) + geom_point() + geom_smooth(method="lm", ) + labs(x="People liberal attitude (in percent)", y="Women state legislators in 2015 (in percent)", title="Women Legislators & People Liberal Attitude") 
+
+cor(states$womleg_2015, states$libpct_m)
+
+boxplot(states$womleg_2015)
+boxplot(states$libpct_m)
+```
+
+At least there is one suspected outlier in the libpct_m variable
+
+Correlation equation:
+
+$$
+r =\sum(x_i-x̄ /sx)(yi-ȳ/sy)/n-1
+$$
+
+## **Question 2**
 
 *Points: 5*
 
 Regress `womleg_2015` (as the dependent variable) on `libpct_m` and report the results in a professionally formatted table. Write the model equation with the estimated coefficients and interpret them. What does the value of $R^2$ tell us about this model?
 
-## Question 3
+```{r}
+x <- lm(womleg_2015 ~ libpct_m, data = states)
+x
+modelsummary(x, statistic = NULL, coef_rename= c("libpct_m" = "people liberal attitude"))
+```
+
+#Estimated coefficients:
+
+womleg_2015~x~= 1.524 + 1.146\*libpct_m~x~ + *e*
+
+Interpretation: For every one unit increase in people's liberal attitude will affect the increase of women state legislature by 1.145 point. The value of R^2^ means the amount of variation of my dependent variable can be explained by my independent variable, that is, around 37% of the number of women state legislature can be explained by how liberal people are.
+
+## **Question 3**
 
 *Points: 5*
 
@@ -41,6 +83,30 @@ Based on this regression, find the predicted value, the observed value, and comp
 ::: callout-tip
 Think RSS.
 :::
+
+```{r}
+tidy(x)
+x_res <- tidy(x)
+beta_0 <- x_res |> filter(term=="(Intercept)") |> pull(estimate)
+beta_0
+
+beta_1<- x_res |> filter(term=="libpct_m") |> pull(estimate)
+beta_1
+
+states |> filter(stateid%in%c("CO    ", "GA    "))|> transmute(state, libpct_m, .fitted= beta_0 + beta_1*libpct_m, diff=libpct_m - .fitted) 
+
+augment(x) |> summarise(sum(.resid^2))
+
+
+```
+
+```{r}
+#total aggregate error for Georgia and Colorado
+res_co <- -4.688783
+res_ga <- -4.095585
+total_res <- res_co^2 + res_ga^2 
+total_res
+```
 
 ## Question 4
 
@@ -56,6 +122,13 @@ The variable `Obama_win12` is a dichotomous indicator of whether Obama won the s
 Please note that you would customarily want a greater number of observations within each cell before conducting such an analysis.
 :::
 
+```{r}
+datasummary_crosstab(obama_win12 ~ gun_rank3, data=states)
+
+```
+
+From the table, we can observe a strong correlation between whether or not Obama won the state in the 2012 election. In states where Obama lost, the majority of people favored fewer restrictions on gun control policy (75%), followed by moderate restrictions (20.8%), and more restrictions (4.2%). However, when Obama won in any states, the attitude is reversed: more people in the winning states favored stricter restrictions (53.8%), followed by moderate restrictions (34.6%), and less restrictions (11.5%).
+
 ## Question 5
 
 *Points: 5*
@@ -66,7 +139,24 @@ I hypothesize that religious identifiers in the mass public are less likely to s
 Table entries are raw counts of observations within each cell.
 :::
 
-![](img/ps2_cross_tab.png)
++------------+-------------+-------------+-------------+------+
+| Religious  | Too         | About       | Too         | All  |
+|            |             |             |             |      |
+| Attendence | Little      | Right       | Much        |      |
++------------+-------------+-------------+-------------+------+
+| Low        | 342 (47.9%) | 356 (41.6%  | 106 (42.7%) | 804  |
++------------+-------------+-------------+-------------+------+
+| Moderate   | 190 (26.6%) | 213 (24.9%) | 51 (20.56%) | 454  |
++------------+-------------+-------------+-------------+------+
+| High       | 182 (25.5%) | 287 (33.5%) | 91 (36.7%)  | 560  |
++------------+-------------+-------------+-------------+------+
+| All        | 714         | 856         | 248         | 1818 |
++------------+-------------+-------------+-------------+------+
+
+```         
+```
+
+The table shows that religious identification does not necessarily correlate with support for federal funding of scientific research. Although the number of those who reported that they rarely attend religious services are more likely to claim that the public funding is too little (47.9%) compared those with moderate (26.6%) or frequent attendances (25.5%), the number of those who claim the public funding is too much remain highest among those with low attendances of religious services (42.7%) compared to individuals with frequent attendance (36.7%). The same pattern holds when we account for individuals who report the federal funding for research is "about right", in which those with fewer attendance remain on the top.
 
 ## Question 6
 
@@ -78,10 +168,36 @@ Say I wish to explore the relationship between the relative advantage of Democra
 
 Create a new variable (i.e., `dem_adv`) based on the `dem_advantage` variable. Calculate the summary statistics of `dem_advantage` and assign the following values to our new variable: if `dem_advantage` is less than the first quartile, set `dem_adv` to `Low`; if the value for `dem_advantage` is greater than the first quartile and less than the third quartile, set the value to `Mid`; and if the value of `dem_advantage` is greater than the third quartile, set the value to `High`.
 
+```{r}
+library(poliscidata)
+library(modelsummary)
+library(dplyr)
+library(tidyverse)
+
+st_q<-quantile(states$dem_advantage, 0.25)
+th_q<-quantile(states$dem_advantage, 0.75)
+st_q
+th_q 
+states <- states |> 
+  mutate(dem_adv = case_when(
+    dem_advantage < st_q ~ "Low", dem_advantage >= st_q & dem_advantage < th_q ~ "Mid", dem_advantage >= th_q ~ "High"))
+sum_dem_adv <- summary(states$dem_advantage)
+print(sum_dem_adv)
+```
+
 ### Part B
 
 Create a crosstab using R; include your results in a professionally formatted table.
 
+```{r}
+datasummary_crosstab(abort_rank3 ~ dem_adv, data=states)
+
+```
+
 ### Part C
 
 What relationship (if any) is there between the relative advantage of Democrats is a given state and the restrictiveness of Abortion policy?
+
+The relationship is that having more Democrats in any states is associated with less restrictions on abortion policy (56%) compared to fewer Democrats (12.5%). This is also confirm when we found that none of the 'blue states' favored more restrictions on abortion policy (0%), although the medium Democrats advantage tend to favor more restrictions on this policy (64.7%). The support for a moderate policy on abortion is somewhat divided among Democratic states, with medium Democrats tending to favor this moderate policy the most (47.1%), followed by low Democrats (29.4%) and high Democrats (23.5%).
+
+Taken as a whole, having more democrats means less restrictions on abortion policies, and having fewer democrats mean vice versa.
