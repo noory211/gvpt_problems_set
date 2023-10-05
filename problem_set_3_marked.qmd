@@ -1,0 +1,221 @@
+---
+title: "Problem Set 3"
+subtitle: "Due date: 2 October"
+format: 
+  html:
+    self-contained: true
+toc: true
+editor: visual
+execute: 
+  echo: true
+---
+
+Please upload your completed assignment to the ELMs course site (under the assignments menu). Remember to include an annotated script file for all work with R and show your math for all other problems (if applicable, or necessary). Please also upload your completed assignment to the Github repository that you have shared with us. *We should be able to run your script with no errors.*
+
+**Total points: 30**
+
+::: {.callout-tip title="HG comments"}
+28/30
+:::
+
+## Question 1
+
+*Points: 10*
+
+::: {.callout-tip title="HG comments"}
+10/10. Great answer. 
+:::
+
+Suppose I want to examine the hypothesis that consuming political news coverage from cable network channels (e.g., CNN, MSNBC, Fox News, etc.) causes citizens to have less trust in government than if they were to consume it from mainstream print media (e.g., New York Times, Wall Street Journal, etc.). What is more, suppose that I believe that this effect is greatest among "young" citizens. Design the contours of an experiment to test this proposition (and be sure to sketch the key elements of the experimental design). Second, briefly describe any significant shortcomings that the experimental design might have.
+
+**Research question**: Does consuming political news coverage from cable network channels causes citizens to have less trust in government?
+
+**Experimental design:**
+
+1\. Select a group of 1200 citizens from all registered voters
+
+2\. Randomly assign them into two groups: the treatment group and control group
+
+**Independent variable:**
+
+1\. I will ask each group to regularly watch/read news related to e.g. government policies in selected media for certain amount of time (e.g 1-2 months).
+
+2\. The treatment group will be assigned to watch cable network channels (CNN, Fox News, MSNBC, etc) whereas the control group will read mainstream print media (New York Times, Washington Post, Wall Street Journal, etc).
+
+3\. Both groups will be assigned randomly, with each group consisting of respondents from different age variations.
+
+**Dependent variable:**
+
+1\. I am interested in knowing respondent attitudes or level of trust towards government. This can be measured with questions such as "How much trust you have to your government?" or "Do you believe in the way the government is handling their job?"
+
+**Procedure:**
+
+1.  After, say, 1-2 months of 'manipulating' independent variable, I will ask the two groups to answer a set of questions related to their attitudes towards the government.
+2.  I record all the responses, clean my data, and start doing an analysis.
+3.  I use statistical technique to compare whether there is a significant difference in the level of trust in government between the two groups.
+4.  I use statistical technique to observe if the 'younger' citizens, regardless they are treated in the control or treatment group, will have a higher likelihood to not trust the government.
+5.  And based on the analysis, I can draw an inference that the difference (if any) between the treatment and control groups has been due to whether or not respondents consume news coverage in cable network channels (and whether or not age matters in explaining this difference).
+
+**Shortcomings:**
+
+1\. I cannot fully control the behavior of my respondent in watching/reading news coverage. making it less convincing to me to claim that this result is due to the difference in watching cable network channels or not. In addition, some people may have different ways of watching and reading news that are outside my control,
+
+2\. Even if I have 'manipulated' the treatment, there could be some other confounding factors that are not taken into account and may be affecting the behavior of respondents. For example, respondents with graduate degree tend to have a more likelihood to watch cable networks channels and follow politics more closely compared to other respondents. This leads to the potential of endogeneity problem in the independent variable.
+
+3\. The relationship between watching news and trust in government might be problematic. People may less trust in government if the ruling party comes from the one respondents did not vote for. Also, as the economic voting literature argues, people also do not trust the government if they feel the economy in general is not doing well, or they feel that their family/themselves are getting increasingly difficult day by day.
+
+## Question 2
+
+*Points: 10*
+
+::: {.callout-tip title="HG comments"}
+8/10
+:::
+
+Below are four hypothetical research designs to determine the effects of democratic governance on the funding of educational institutions. Briefly evaluate each sampling design in terms of its: (1) sampling variability; and, (2) sources of potential bias.
+
+A. A sample of educational funding levels for every country in Europe for each of the last 100 years.
+
+*The sampling variability is low given the research includes all countries in Europe.*
+
+::: {.callout-tip title="HG comments"}
+Correct.
+:::
+
+*There may be potential bias if the research aims to measure the impact of democratic governance on educational funding levels.*
+
+*First, democracy is a relatively new phenomena and perhaps, in the last 100 years, only a handful of country can be classified as democratic in Europe. So the it cannot be generalized by claiming 'democratic governance' applies to all countries.*
+
+*Second, many countries in Europe became independent less than 100 years ago. For example, most countries in Eastern Europe used to be part of the Soviet Union. So if we use such a long timeframe, some countries that have recently gained independent may not be included in the data.*
+
+::: {.callout-tip title="HG comments"}
+Correct.
+:::
+
+B. A sample of educational funding levels in five randomly picked countries drawn from the global population of countries for each of the last 10 years.
+
+*If the five countries were randomly pick from the global population countries, the sampling variability may be relatively high. This is because the sample is quite small relative to the total population. Larger sample size tend to have lower variability because they provide more accurate representation about the population.*
+
+::: {.callout-tip title="HG comments"}
+Correct.
+:::
+
+*The potential bias can be occurred for a number reasons:*
+
+-   *if the countries are not rigorously picked from the global population,*
+
+-   *if the non-democratic countries are overreprentated in the sample,*
+
+-   *if some countries in certain year have far more/less funding because of economic changes*
+
+-   *if the sample respond differently to the asked question,*
+
+-   *or if the way the data being collected/analysis far differently from one country to another.*
+
+::: {.callout-tip title="HG comments"}
+Because these countries are selected randomly, we should not see bias in this sample. Every country has equal opportunity of being selected. If we took multiple random samples of five countries, the average of these samples should approach that of the population. 
+:::
+
+C. A survey of educational administrators that yields responses that allow for a comparison of educational funding levels in Russia and the United States for the six-year period from 2010 to 2015.
+
+*If the survey is conducted rigorously with a representative sample being drawn randomly from Russia and the United States, the sampling variability may be relatively low.* 
+
+::: {.callout-tip title="HG comments"}
+Correct. 
+:::
+
+*This is because the survey do not compare Russia and the US with all countries in the world, the comparison applies only for the two countries. The sample statistics are likely to be close to the population parameters.*
+
+::: {.callout-tip title="HG comments"}
+This is a statement about bias, not sampling variability. If we administered multiple surveys of these groups, would we get very different responses each time?  
+:::
+
+*The potential bias could emerge from the following reasons:*
+
+-   *Russia and the US are not identical in terms of democratic governance. It's hard to claim Russia is a democratic country as of now. So comparing the two with the standard 'democratic governance' may be bias against Russia.*
+
+::: {.callout-tip title="HG comments"}
+Russia would represent a non-democracy, allowing us to compare levels of funding in democracies to levels of funding to non-democracies. Is Russia representative of all non-democracies? Is the US representative of all democracies?
+:::
+
+-   *Even if the respondents have been randomly picked, it can have bias if researchers do not explain in detail about the level of 'educational institutions' that they are referring to. If researchers measure institutions or focus on different institutions in Russia and the US, the result will likely have a systematic bias.*
+
+::: {.callout-tip title="HG comments"}
+Correct. 
+:::
+
+D. A sample of 75 randomly selected countries' educational funding levels for each of the past 25 years.
+
+*If the sample is truly random and representative of the entire population of countries, the sampling variability may be relatively low.*
+
+::: {.callout-tip title="HG comments"}
+Correct. 
+:::
+
+*The potential bias are the following:*
+
+-   *If the sample includes an overrepresentation of democratic countries or excludes countries with other governance systems, it can introduce bias.*
+
+::: {.callout-tip title="HG comments"}
+This should not make for a biased sample. We need to split out democracies and non-democracies to have groups to compare. As long as both groups reflect their populations, which random sampling should ensure, we are fine. 
+:::
+
+-   *If the measurement of 'democratic governance' is inconsistent throughout all countries.*
+
+-   *If certain countries with their characteristics respond inherently different compared to the rest of the countries.*
+
+## Question 3
+
+*Points: 10*
+
+::: {.callout-tip title="HG comments"}
+10/10
+:::
+
+Using the `hanmerKalkanANES` dataset (posted on ELMs), construct a cross-tab with `presvote` (dichotomous variable coded with a value label) as the dependent variable and `ageCategorical` (1 = 18-30; 2 = 31-40; 3 = 41-50; 4 = 51-60; and 5 = 61-over) as the independent variable. Create a table with the cross-tab results and interpret them -- i.e., what is the apparent association, if any, between age and U.S. presidential vote in 2004?
+
+Next, what is:
+
+A.  The conditional distribution of respondents who are 41-50 that voted for Kerry?
+
+B.  The conditional distribution of respondents who are 41-50 that voted for Bush?
+
+::: {.callout-tip title="HG comments"}
+Please avoid hard coding file paths into your scripts (for example: `~/Desktop/GVPT/Fall 2023/622 Quant Method/GVPT Problem Set/hanmerKalkanANES.RDataa`). This causes an error when someone else tries to render your script. Instead, use `here::here()`.  
+:::
+
+```{r}
+library(tidyverse)
+library(dplyr)
+library(rio)
+library(modelsummary)
+library(broom)
+load(here::here("hanmerKalkanANES.RData"))
+
+x <- x %>%
+  mutate(ageCategorical = case_when( 
+  age >= 18 & age <= 30 ~ "1",
+  age >= 31 & age <= 40 ~ "2",
+  age >= 41 & age <= 50 ~ "3",
+  age >= 51 & age <= 60 ~ "4",
+  age >= 61 ~ "5"))
+
+view(x)
+datasummary_crosstab(presvote ~ ageCategorical, data=x)
+```
+
+*"The patterns indicate that George Bush tends to receive more votes in the older age brackets than John Kerry. Bush's votes keeps on increasing as the older voters are. Conversely, John Kerry garners the majority of votes from either the youngest or the oldest age bracket, suggesting that he attracts more support from these two demographic groups, whereas Kerry's votes in age bracket of 2 to 4 is relatively stable at 16 percent.*
+
+```{r}
+x |> 
+  summarize(prob = sum(ageCategorical == "3" & presvote == "Kerry", na.rm = TRUE)/sum(ageCategorical == "3", na.rm = TRUE))
+```
+
+*The conditional distribution for Kerry is 0.42. This tells us that 42 percent of respondent in the age group 41-50 voted for Kerry.*
+
+```{r}
+x |>
+  summarize(prob = sum(ageCategorical == "3" & presvote == "Bush", na.rm = TRUE)/sum(ageCategorical == "3", na.rm = TRUE))
+```
+
+*The conditional distribution for Bush is 0.57. This tells us that 57 percent of respondent in the age group 41-50 voted for Bush.*
