@@ -1,0 +1,317 @@
+---
+title: "Mid-Term Exam #1"
+subtitle: "Due date: 6 October (11:59 pm)"
+format: 
+  html: 
+    self-contained: true
+    toc: true
+editor: visual
+execute: 
+  message: false
+  warning: false
+---
+
+Please read all of the questions and tables carefully and follow all instructions. Each question has an allotted point value. Be as thorough and specific as possible; extra calculations and incorrect information, even in the presence of correct information, will result in point deductions. Be sure to show all formulas and all necessary work to answer the questions. You may upload your completed exam to the Elms course site (attach to Exam #1).
+
+::: callout-note
+While this is an open-note exam, you are not to receive assistance from anyone else. As usual, the Honor Code applies.
+:::
+
+## Conceptual Questions
+
+**Total points: 15**
+
+Please include all work (and computations) necessary to answer the questions.
+
+```{r}
+library(skimr)
+library(tidyverse)
+library(countrycode)
+library(broom)
+library(janitor)
+library(ggridges)
+library(modelsummary)
+library(ggplot2)
+library(dplyr)
+library(rio)
+library(poliscidata)
+library(gss)
+library(poliscidata) 
+library(gss)
+library(poliscidata) 
+library(states)
+library(skimr)
+library(tidyverse)
+library(ggplot2)
+
+```
+
+### Question 1
+
+*1 point*
+
+The following is a list of observed values, ordered from lowest to highest: 62, 63, 63, 64, 66, 67, 68, 68, 69, 70, 71, 72, 72, 74, 75, 76. What is an accurate five-number summary for these data?
+
+```{r}
+obs_c <- c(62, 63, 63, 64, 66, 67, 68, 68, 69, 70, 71, 72, 72, 74, 75, 76)
+summary_stats <- summary(obs_c)
+print(summary_stats)
+
+
+```
+
+### Question 2
+
+*1 point*
+
+Suppose that the median, Q1, and Q3 from question #1 is an accurate representation of a second (hypothetical) distribution. Based on what this information tells you about this second distribution, which of the following numbers would be a suspected outlier?
+
+A.  76
+
+B.  62
+
+C.  83
+
+D.  Both (A) and (C)
+
+E.  All of the above
+
+F.  None of the above, or cannot be determined from the information given.
+
+**The answer is B, 83.**
+
+Given the Q3 and Q1 are known, then we can get the Interquartile Range (IQR), that is Q3-Q1 or 72 - 65,5 = 6,5.
+
+Values that fall for below Q1 - 1,5 x IQR or above Q3 + 1,5 x IQR are considered suspected outliers.
+
+### Question 3
+
+*1 point*
+
+There is a group of three children with the following ages: 3, 4, and 5. If a 6-year-old child joins the group, what will happen to the mean and standard deviation of the group's age?
+
+```{r}
+# three kids
+three_kids <- c(3,4,5)
+mean(three_kids)
+sd(three_kids)
+
+# four kids
+four_kids <- c(3,4,5,6)
+mean(four_kids)
+sd(four_kids)
+```
+
+**Therefore, when the 6-year-old child joins the group, both the mean and standard deviation will increase.**
+
+### Question 4
+
+*1 point*
+
+If I estimate an OLS regression and obtain a $R^2$ of 0.40 where the Total Sum of Squares of 4,150, what does the Residual Sum of Squares equal?
+
+RSS = TSS \* (1 - R-squared)
+
+RSS = 4,150 \* (1 - 0.40)
+
+RSS = 4,150 \* 0.60
+
+RSS = 2,490
+
+**The Residual Sum of Squares equal to 2,490**
+
+### Question 5
+
+*1 point*
+
+The distribution of some variable has a median that is smaller than its mean. Which of the following statements about the distribution's shape is most consistent with this information?
+
+A.  The shape of the distribution would be symmetric
+B.  The shape of the distribution would be skewed left
+C.  The shape of the distribution would be skewed right
+D.  None of the above -- cannot be determined from the information given.
+
+**The answer is C.**
+
+### Question 6
+
+*1 point*
+
+Suppose I want to test the hypothesis that the U.S. public's approval of the president is higher when people have more positive perceptions of the U.S. economy. To test this hypothesis, I conduct a survey of individual-level attitudes. Which of the following research design strategies should I expect to exhibit both the greatest sampling variability (in the context of repeated sampling) and the lowest degree of expected sampling bias?
+
+A.  A random sample of 1,200 people from a list of all U.S. residential addresses
+
+B.  A random sample of 600 people from a list of all registered students at the University of Maryland
+
+C.  A random sample of 1,200 people from a list of all registered students at the University of Maryland
+
+D.  A random sample of 600 people from a list of all U.S. residential addresses.
+
+    Given the hypothesis seeks to understand the US public's approval of the president, then the best sample would be one that are drawn from all US population. Also, the more sample you have, the lower the variability is. **Therefore, the answer is A.**
+
+    ### Question 7
+
+*1 point*
+
+The median age of ten people in a room is 50 years. One 40-year-old person leaves the room. What can we expect will happen to the median age for the remaining nine people? Do we know the median age of those nine people; if so, what is it?
+
+The median age is not going to be affected because the age of the 40-year-old person is younger than the overall age. In this case, the ages of the nine people will be around 50 years, because the median is the middle value in the list. So, the median remains the same at 50 years
+
+### Question 8
+
+*1 point*
+
+The mean age of ten people in a room is 50 years. One 70-years-old person leaves the room. What can we expect will happen to the mean age for the remaining nine people? Do we know the mean age of those nine people; if so, what is it?
+
+(10\*50) - 70
+
+500 - 70
+
+430
+
+430/9
+
+47.8
+
+**So, after the 70-years old person leaves the room, the mean age of those nine people is 47,8.**
+
+### Question 9
+
+*1 point*
+
+Which of the following sets of numbers has the largest standard deviation?
+
+A.  2, 4, 6, 8
+B.  7, 8, 9, 10
+C.  5, 5, 5, 5
+D.  1, 2, 3, 5
+
+```{r}
+A <- c(2,4,6,8)
+B <- c(7,8,9,10)
+C <- c(5,5,5,5)
+D <- c(1,2,3,5)
+
+sd(A)
+sd(B)
+sd(C)
+sd(D)
+```
+
+**The answer is A**
+
+### Question 10
+
+*6 points*
+
+I hypothesize that people with greater social trust are more likely to turnout to vote in American national elections. I use data from the 2012 General Social Survey to examine how respondents' self-reported level of social trust might be correlated with their decisions to vote. In particular, I use the `social_trust` variable (i.e., a 4-point ordinal indicator of social trust -- larger values reflect greater trust) and the `vote08` variable (i.e., a dichotomous indicator where a `1` indicates that the respondent voted) to test my hypothesis.
+
+Complete the cross-tab below so that you may properly evaluate my hypothesis. Briefly interpret the results of your completed cross-tab. Do the data suggest that social trust is related to voting in 2008? Be sure to explain the nature of the relationship (or lack thereof, if relevant).
+
+::: callout-note
+Table entries represent raw counts of observations within each cell.
+:::
+
+![](img/mid_term_exam.png)
+
+```{r}
+datasummary_crosstab(social_trust ~ voted08, data=gss)
+```
+
+The hypothesis that people with higher social trust will be more likely to cast their votes hold up in the GSS data. Overall, the number of voters with the highest social trust who actually voted was higher than those with the lowest social trust (83.9% vs 58.1%). The pattern between social trust and the decision to vote is linear, as indicated by the gradual increase in the percentage of votes as the the level of trust increases. The same pattern applies to those who did not vote, where voters with lower social trust will be more likely not to come to the ballot box than those with higher trust.
+
+## Applied Questions
+
+Please include your R code. All data sets referenced below are available through the `poliscidata` R-package.
+
+**Total points: 20**
+
+### Question 1
+
+*10 points total*
+
+Use the `states` dataset (the U.S. state is the unit of analysis) and estimate a bivariate regression where the size of a state's urban population (`urban`) explains variation in abortion attitudes (`permit`) and report the results in a professionally formatted table. The variable `permit` measures the percentage (on a 0-to-100 scale) of a state's population that says abortion should always be allowed. The variable `urban` measures the percentage (on a 0-to-100 scale) of a state's population in an urban area. Answer the following questions.
+
+A.  Interpret the effect of the independent variable on the dependent variable. *2 points*
+
+B.  Interpret the estimate of the intercept. Is it substantively meaningful to interpret this coefficient on its own? Explain why, or why not. *2 points*
+
+C.  Compute the residual sum of squares for the following two observations combined: (1) California; and (2) Texas. *2 points*
+
+D.  How well does the model fit the data (i.e., how well can we explain abortion attitudes with this model?) *2 points*
+
+E.  Is the relationship between the independent and dependent variable causal? Why or why not? *2 points*
+
+    ```{r}
+    biv_reg <- lm(permit ~ urban, data = states)
+    biv_reg
+    modelsummary(biv_reg, statistic = NULL, coef_rename = c("urban" = "urban population"))
+
+    state_tx_ca <- states |>
+      filter(stateid %in% c("TX    ", "CA    ")) |>
+      column_to_rownames("stateid") |>
+      select(urban, permit)
+
+    state_tx_ca_pred <- augment(biv_reg, newdata = state_tx_ca)
+    state_tx_ca_pred
+
+    state_tx_ca_pred |>
+      summarise(sum(.resid^2))
+
+    plot(biv_reg$residuals, xlab = "Fitted Values", ylab = "Residuals", main="Residuals Plot")
+    abline(h=0, col = "red")
+    ```
+
+A. A one-unit or one-percent increase in urban population is associated with a 37.3 percent increase in the permissive attitudes towards abortion in the general public on average.
+
+B. The model suggests that in areas with no urban population, the level of permissive attitudes towards abortion in the general public would be around 9.6%.
+
+C. Residual sum of square of TX and CA is 128.9552
+
+D. Based on the R-squared value, approximately 27 percent of the variation in my dependent variable (abortion permissive attitude) can be explained by my independent variable (percentage of urban population). This indicates a relatively modest relationship.
+
+E. It's not a causal relationship; it's more of a correlational relationship between the two variables. Correlation does not imply causation. If we want to establish a causal link, the use of experimental design is preferred. Additionally, it's not clear if the data were collected randomly. The relationship is not supported by a strong theory either, making it challenging to assess their connection. Furthermore, we have not taken into consideration other potential confounding variables in this bivariate regression.
+
+### Question 2
+
+*5 points*
+
+Use the `gss` data set (the unit of analysis is the individual survey respondent) and evaluate the hypothesis that Republicans had less confidence in the executive branch of the federal government than Democrats in 2016. Use the following variables: `partyid` is a 7-category ordinal indicator (0 = Strong Democrat; 1 = Weak Democrat; 2 = Independent Democrat; 3 = Independent; 4 = Independent Republican; 5 = Weak Republican; 6 = Strong Republican); and `confed` is a 3-category ordinal indicator (1 = "a great deal" of confidence; 2 = "only some;" 3 = "hardly any"). Do the data support the hypothesis and how do you know?
+
+```{r}
+test_data <- table(gss$partyid, gss$confed)
+summary_test_data <- as.data.frame(test_data)
+
+ggplot(data = gss, aes(x=partyid, fill=confed)) + geom_bar() + theme_minimal()
+
+datasummary_crosstab(confed ~ partyid, data=gss)
+
+
+```
+
+The data supports the hypothesis that Republicans have expressed less confidence in the federal government than Democrats. This is evident from the lower confidence scores among Strong Republicans compared to others. The pattern appears to be linear, indicating that the stronger one's affinity for Republican ideology, the less likely they are to trust the government, and vice versa.
+
+### Question 3
+
+*5 points*
+
+Use the `world` dataset and evaluate the distributions for each the following variables: `literacy` (a country's literacy rate) and `free_overall` (a country's degree of economic freedom). Be sure to visually display each distribution and thoroughly describe their key attributes. Next, evaluate the bivariate relationship between the two variables -- i.e., is economic freedom associated with literacy? If so, what is the nature of the relationship and how do you know? In doing so, be sure to use proper descriptive tools (and thus do not rely simply on a regression output).
+
+```{r}
+ggplot(world, aes(x=literacy)) + geom_histogram() +  theme_grey() + labs (x="level of literacy")
+ggplot(world, aes(x=free_overall)) + geom_density() + labs (x="economic freedom")
+
+```
+
+The literacy data reveals that the majority of observations cluster around a score of 100, indicating an almost 100% literacy rate. And only a few cases exhibit literacy rates below 50-60%. The economic freedom data shows a wider distribution. The majority of cases are within the range of 50 to 70 scores, with only a small number of cases falling below 40% or exceeding 80% in economic freedom.
+
+```{r}
+applied_q3 <- lm(free_overall ~ literacy, data = world)
+applied_q3
+
+modelsummary(applied_q3, statistic = NULL)
+```
+
+The bivariate regression reveals a positive relationship between economic freedom and the level of literacy. It suggests that a one-unit increase in the level of literacy is associated with a 0.23-point increase in economic freedom. The intercept is 40.83, signifying that in a hypothetical scenario with no literacy at all, the level of economic freedom would stand at 40.83% overall.
+
+In total, we have 143 observations, and the R-squared is 0.188, indicating that 18.8% of the variation in the dependent variable (economic freedom) can be explained by the independent variable (literacy). This suggests a relatively modest relationship between the two variables, which could potentially strengthen when we control for other relevant variables in the model.
