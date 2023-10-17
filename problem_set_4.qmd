@@ -20,11 +20,31 @@ Please upload your completed assignment to the ELMs course site (under the assig
 
 Suppose I am playing poker with a regular deck of 52 cards. I have three cards in my hand, one of which is a king. What is the probability that the next two cards I draw will both be kings?
 
+Given that there are 4 kings in a standard deck of 52 cards, and we\'ve drawn 1 king, we have 3 more kings remaining. Now the probability of drawing two consecutive kings can be calculated as follows:
+
+(3/51) \* (2/50) = 6/2550 = 1/425.
+
+Therefore, the probability of the next two cards will be both kings is 1/425
+
 ## Question 2
 
 *Points: 5*
 
 A survey of 1,500 randomly selected individuals reveals that 46% of them have a college degree and that 31% of them have a gun in their house. If you were to assume that college graduation and gun ownership are independent of one another, what is the probability that an individual is both a college graduate and does not have a gun in his or her house?
+
+Total individuals = 1500
+
+46% of college degree = 690
+
+54% of non-college degree = 810
+
+31% have a gun = 465
+
+69% don\'t have a gun = 1035
+
+P (A and B) = P(A) x P(B) = (690/1500) x (1035/1500) = 0.32
+
+So. the probability of individuals with a college degree and do not have a gun is 32 percent.
 
 ## Question 3
 
@@ -32,14 +52,54 @@ A survey of 1,500 randomly selected individuals reveals that 46% of them have a 
 
 I roll a fair six-sided dice and I get a number greater than three. What is the probability that the next two dice rolls will also generate numbers greater than three?
 
+The probability of the next two dice rolls will generate numbers greater than three can be calculated as follow:
+
+(3/6) x (3/6) = 9/36 = 1/4
+
+The probability that the next two dice rolls will generate numbers greater than three in 25%.
+
 ## Question 4
 
 *Points: 10*
 
 Assume that in the United States, 15% of people are smokers and, of smokers, 60% smoke at least one pack a day. Among those who smoke at least a pack a day, 60% will develop lung cancer at some point in their lives while, in the rest of the population (which includes smokers who smoke less than a pack a day and non-smokers), only 10% will. What is the probability that a person who develops lung cancer was a smoker who smoked at least a pack a day?
 
-## Question 5
+We can answer this question with the conditional probability formula
+
+P(A\|B) = P(A and B)/P(B)
+
+P(A) = 0.15 x 0.6 = 0.09
+
+P(B\|A) = 0.6
+
+Complement P(A^c^)=1-P(A) = 1-(0.09) = 0.91
+
+Non-smokers develop lung cancer = 0.1
+
+Calculate P(B)
+
+P(B) = (0.09) x (0.6) + (0.91) x (0.1)= 0.054 + 0.091 = 0.145
+
+Conditional probability
+
+P(A\|B) = P(A and B)/P(B) = 0.09 x 0.6/ 0.145 = 0.37
+
+Therefore, the probability that a person who develops lung cancer was a smoker who smoked at least one pack a day is approximately 37%.
 
 *Points: 5*
 
 Assume that in the world, 60% of countries are democracies and 80% of countries have ratified the Rome Statute for the International Criminal Court. Assume further that 90% of democracies have ratified the Rome Accords. What is the probability that a country is either a democracy or has ratified the Rome Accords?
+
+Democracies = 60% (A)
+
+Ratified Rome Accords = 80% (B)
+
+Probabilities democracies have ratified Rome Accords P(B\|A) = 90%
+
+P (A and B) = 0.6 x 0.9 = 0.54
+
+P (A or B) = P(A) + P(B) -- P(A and B)
+
+Then 0.6 + 0.8 -- 0.54 = 0.86
+
+Therefore, the probability that a country is either a democracy or has ratified the Rome Accords is 86 percent.
