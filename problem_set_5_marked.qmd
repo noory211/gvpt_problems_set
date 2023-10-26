@@ -1,0 +1,369 @@
+---
+title: "Problem Set 5"
+subtitle: "Due date: 23 October"
+format: 
+  html:
+    self-contained: true
+toc: true
+editor: visual
+execute: 
+  echo: true
+---
+
+Please upload your completed assignment to the ELMs course site (under the assignments menu). Remember to include an annotated script file for all work with R and show your math for all other problems (if applicable, or necessary). Please also upload your completed assignment to the Github repository that you have shared with us. *We should be able to run your script with no errors.*
+
+**Total points: 25**
+
+```{r}
+library(tidyverse)
+library(janitor)
+library(poliscidata)
+library(ggdist)
+library(MetBrewer)
+library(modelsummary)
+library(DescTools)
+library(scales)
+
+set.seed(1234)
+```
+
+## Question 1
+
+*Total points: 6*
+
+::: {.callout-tip}
+3/6
+:::
+
+Use the data in the table below to answer the following questions.
+
+```{r}
+#| echo: false
+
+tibble::tibble(
+  `Age group` = c("18-24", "25-30", "31 and up", "TOTAL"),
+  `Non-voters` = c(70, 40, 220, 330),
+  Voters = c(50, 50, 570, 670),
+  Total = `Non-voters` + Voters
+) |> 
+  knitr::kable(caption = "Voting by Age in 2000")
+```
+
+### Part A
+
+*Points: 2*
+
+::: {.callout-tip}
+1/2
+:::
+
+What is the probability of being 25-30 or a non-voter?
+
+Probability of age group 25-30 = 90/1000 = 0.09
+
+Probability of non-voters = 330/1000 = 0.33
+
+P (age group or non-voters) = P (age group) + P (non-voters) = 0.09 + 0.33 = 0.42
+
+So, the probability of either being age group 25-30 or non-voters is 42%
+
+::: {.callout-tip}
+$$
+Pr(25\ to\ 30\ OR\ NV) = Pr(25\ to\ 30) + Pr(NV) - Pr(25\ to\ 30\ \&\ NV)
+$$
+
+$$
+Pr(25\ to\ 30) = \frac{90}{1000} = 0.09
+$$
+
+$$
+Pr(NV) = \frac{330}{1000} = 0.33
+$$
+
+$$
+Pr(25\ to\ 30\ \&\ NV) = \frac{40}{1000} = 0.04
+$$
+
+Therefore:
+
+$$
+Pr(25\ to\ 30\ OR\ NV) = 0.09 + 0.33 - 0.04 = 0.38
+$$
+:::
+
+### Part B
+
+*Points: 4*
+
+::: {.callout-tip}
+2/4
+:::
+
+Assuming a normal distribution, report the 95% confidence intervals for the percentage of 18-to-24-year-olds who did not vote, and then the percentage of 25-to-30-year-olds who did not vote.
+
+Age group 18-24 proportion = 70/120 = 0.583
+
+se(p_hat) = sqrt (p_hat \* (1 -- p_hat))/n
+
+= sqrt (0.583 \* (1 -- 0.583)/120)
+
+= sqrt (0.583 \* 0.417/120)
+
+= 0.04501028
+
+Lower_95 \<- 0.583 -- 1.96 \* 0.04501028
+
+= 0.4947799
+
+Upper_95 \<- 0.583 + 1.96 \* 0.04501028
+
+= 0.6712201
+
+So, approximately, 95% of age group 18-24 proportion falls between 49.4 and 67.1
+
+Age group 25-30 proportion = 40/90 = 0.444
+
+se(p_hat) = sqrt (p_hat \* (1 -- p_hat))/n
+
+= sqrt (0.444 \* (1 -- 0.444)/90)
+
+= 0.05237302
+
+Lower_95 \<- 0.444 -- 1.96 \* 0.05237302
+
+= 0.3413489
+
+Upper_95 \<- 0.444 + 1.96 \* 0.05237302
+
+= 0.5466511
+
+So, approximately, 95% of age group 25-30 proportion falls between 34.1 and 54.6
+
+::: {.callout-tip} 
+The probability that an individual is 18-to-24 and a non-voter is not conditional. Therefore, you look at the proportion of the whole population who meet those criteria.
+
+$$
+\hat{p} = Pr(18\ to\ 24 \& NV) = \frac{70}{1000} = 0.07 
+$$
+
+And: 
+
+$$
+n = 1000
+$$
+
+Therefore: 
+
+$$
+SE(\hat{p}) = \sqrt{\frac{0.07 * 0.93}{1000}} = 0.008068457
+$$
+
+The 95% confidence interval can be found:
+
+$$
+\hat{p} \pm 1.96*SE(\hat{p})
+$$
+
+Therefore, the 95% confidence interval for the percentage of 18-to-24-year-olds who did not vote is `r percent(0.07 - 1.96 * 0.008068457, accuracy = 0.01)` to `r percent(0.07 + 1.96 * 0.008068457, accuracy = 0.01)`.
+
+Using the same method, the 95% confidence intervals for the percentage of 25-to-30-year-olds who did not vote is `r percent(0.04 - 1.96*0.006196773, accuracy = 0.01)` to `r percent(0.04 + 1.96*0.006196773, accuracy = 0.01)`.
+:::
+
+## Question 2
+
+*Total points:* *7*
+
+::: {.callout-tip}
+7/7
+:::
+
+Assume that the standard deviation for the population distribution of a state in which you want to conduct a poll is 200.
+
+### Part A
+
+*Points: 3*
+
+::: {.callout-tip}
+3/3
+:::
+
+Calculate the spread of the sampling distribution for each of the following sample sizes: 1, 4, 25, 100, 250, 1000, 5,000, and 10,000.
+
+SE = SD/sqrt of n
+
+SE = 200/sqrt (1) = 200
+
+SE = 200/sqrt (4) = 100
+
+SE = 200/sqrt (25) = 40
+
+SE = 200/srt (100) = 20
+
+SE = 200/sqrt (250) = 12.65
+
+SE = 200/sqrt (1000) = 6.32
+
+SE = 200/sqrt (5000) = 2.83
+
+SE = 200/sqrt (10000) = 2
+
+### Part B
+
+*Points: 1*
+
+::: {.callout-tip}
+1/1
+:::
+
+Describe specifically how the variability of the sampling distribution changes as the sample size varies. Considering the expense of running a poll, which sample size do you think is most optimal if conducting the poll?
+
+As the sample size increases, the standard error becomes lower, bringing the sample mean closer to the population. The lower standard error also reduces variability. The largest sample size (10000) will be the most favorable for conducting the poll, despite the diminishing returns of the standard error as the sample size reaches 5000.
+
+### Part C
+
+*Points: 3*
+
+::: {.callout-tip}
+3/3
+:::
+
+Display your results graphically (using R) with the sample size on the x-axis and the standard error (of the sampling distribution) on the y-axis.
+
+```{r}
+sample_size <- c(1,4,25,100,250,1000,5000,10000)
+se <- 200/sqrt(sample_size)
+data_sample_size <- data.frame(sample_size, se)
+
+ggplot(data_sample_size, aes(x=sample_size, y=se)) + geom_point (color="blue") + geom_line(color="red") + labs (x="Sample Size", y="Standard Error", title ="Sample size vs. standard error") + theme_grey()
+```
+
+## Question 3
+
+*Points: 4*
+
+:::{.callout-tip}
+2/4
+:::
+
+MOE (90%CI) = MOE (95%CI) \* Z-score (95%)/Z-score (90%)
+
+= 4.5 \* 1.96/1.645
+
+= 5.361702
+
+So, the MOE for a 90% CI, given the known information about sample size and MOE of 95% CI, is 5.36
+
+::: {.callout-tip}
+$$
+ME_{95} = 4.5 = 1.96*\frac{SE}{\sqrt{n}} = 1.96*\frac{SE}{\sqrt{900}}
+$$
+
+$$
+SE = 68.87755
+$$
+
+Therefore, the margin of error for a 90% confidence interval is:
+
+$$
+ME = 1.64*\frac{68.87755}{\sqrt{900}} = 3.765306
+$$
+:::
+
+## Question 4
+
+*Points: 4*
+
+::: {.callout-tip}
+3/4
+:::
+
+Assume that, in State A, the mean income in the population is \$20,000 with a standard deviation of \$2,000. If you took an SRS of 900 individuals from that population, what is the probability that you would get a sample mean income of \$20,200 or greater? What would be the probability if the sample size was only 25?
+
+::: callout-note
+Assume a normal distribution for both questions.
+:::
+
+Find the z-score with the sample size 900
+
+Z = 20,200 -  20,000/2000/sqrt(900) = 200/66,67 = 3
+
+In the distribution table, z-score = 3 is approximately equal to 0.9987 or 99.87%
+
+::: {.callout-tip}
+You can use `pnorm(3, lower.tail = F)` to calculate this directly. You are calculating the probability that we get a number smaller than 3. We need the probability that you would get a value more extreme (higher than) 3.
+:::
+
+For the sample size of 25
+
+Z =  20,200 -- 20,000/2000/sqrt(25) = 200/400 = 0.5
+
+In the distribution table, z-score = 0.5 is approximately equal to 0.6915 or 69.15%
+
+So, the probability to get a sample mean income of \$20,200 or greater with a sample size of 900 is 99.87% and with sample size of 25 is 69.15%
+
+::: {.callout-tip}
+
+With a sample size of 900:
+
+$$
+SE = \frac{2000}{\sqrt{900}} = 66.67
+$$
+
+What is probability of getting a sample mean income of \$20,200 or greater? We need to calculate the (standardized) z-score for this value:
+
+$$
+Z = \frac{x - \mu}{SE} = \frac{20200 - 20000}{66.67} = 3
+$$
+
+We can then calculate the proportion of values that sit greater than this standardized value in our hypothetical, normal sample distribution.
+
+The probability of getting a sample mean income of \$20,200 or greater is `r round(pnorm(3, lower.tail = F), 4)`.
+
+If the sample size was only 25:
+
+$$
+SE = \frac{2000}{\sqrt{25}} = 400
+$$
+
+What is probability of getting a sample mean income of \$20,200 or greater?
+
+$$
+Z = \frac{x - \mu}{SE} = \frac{20200 - 20000}{400} = 0.5
+$$
+
+The probability of getting a sample mean income of \$20,200 or greater is `r round(pnorm(0.5, lower.tail = F), 4)`.
+:::
+
+## Question 5
+
+*Points: 4*
+
+::: {.callout-tip}
+4/4
+:::
+
+Assume that a coin is fair. If I flip a coin 500 times, what is a 95% confidence interval for the range of the count of heads that I will get? What if I flip the coin 5,000 times? What about 50,000 times?
+
+For n = 500
+
+µ = 500 x 0.5 = 250
+
+d =  √500 x 0.5 x (1 -0.5) ≈ 11.18
+
+95% CI = 250 -- + 1.96 x 11.18 = (2227.92 & 272.08)
+
+For n = 5000
+
+µ = 5000 x 0.5 = 2500
+
+sd = √5000 x 0.5 x (1-0.5) ≈ 35.36
+
+95% CI = 2500 -- + 1.96 x 35.36 = (2430.29 & 2569.71)
+
+For n = 50,000
+
+µ = 50,000 x 0.5 = 25,000
+
+sd = √50,000 x 0.5 x (1-0.5) ≈ 111.8
+
+95% CI = 25,000 -- + 1.96 x 111.8 = (24,780.68 & 25,219.32)
