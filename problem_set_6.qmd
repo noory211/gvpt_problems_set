@@ -12,6 +12,19 @@ execute:
 
 Please upload your completed assignment to the ELMs course site (under the assignments menu). Remember to include an annotated script file for all work with R and show your math for all other problems (if applicable, or necessary). Please also upload your completed assignment to the Github repository that you have shared with us. *We should be able to run your script with no errors.*
 
+```{r}
+library(tidyverse)
+library(skimr)
+library(wbstats)
+library(countrycode)
+library(janitor)
+library(broom)
+library(infer)
+library(scales)
+
+set.seed(1234)
+```
+
 **Total points: 40**
 
 ## Question 1
@@ -24,21 +37,49 @@ I hypothesize that the mean mathematics SAT score for University of Maryland stu
 
 Based on my sample, what is a point estimate for the mean mathematics SAT score for University of Maryland students?
 
+610
+
 ### Part B
 
 What is a 95% confidence interval around that estimate?
+
+CI = x-bar +/-- t (sd/sqrt(n))
+
+610 +/-- 1.96 (75/sqrt(625))
+
+610 +/- 1.96 x 3
+
+The 95% CI is = 610 +/-- 5.88 = (604.12, 615.88)
 
 ### Part C
 
 What is the null hypothesis?
 
+The mean mathematics SAT score for University of Maryland students is equal to 600.
+
 ### Part D
 
 What is the two-tailed p-value and what does it mean?
 
+Calculate z = x-bar - pop mean/sd/sqrt(n)
+
+= 610 - 600/75/sqrt(625)
+
+= 10/3
+
+= 3.33
+
+Degree of freedom = 624
+
+The z-value of 3.33 give us a one-tail p-value of 0.0004. Then, the two-tailed would be twice that, which is of 0.0008.
+
+The p-value is very small than the standard significance level (0.05, 0.01). This means we can confidently reject the null hypothesis.
+
 ### Part E
 
 Do the data support my hypothesis? Why, or why not?
+
+Yes, since the null hypothesis is rejected, we accept the alternative hypothesis, that is, the mean mathematics SAT score for University of Maryland students is different than 600.
 
 ## Question 2
 
@@ -50,19 +91,47 @@ I take an SRS of 900 citizens in a public opinion survey and find that the mean 
 
 What is the null hypothesis?
 
+The null hypothesis is that the mean feeling thermometer of President Biden is equal to or less than 50.
+
 ### Part B
 
 What is a 95% confidence interval around the sample statistic? Does this interval indicate support for a two-tailed test of my hypothesis (`p < 0.05` as the threshold)? Why, or why not?
 
+Calculate the standard error = sd/sqrt(n)
+
+= 25/sqrt(900) = 25/30 = 0.8333
+
+Calculate the margin of error for the 95% CI = z \* SE
+
+= 1.96 \* 0.8333 = 1.633268
+
+Calculate the CI = x-bar +/- ME
+
+= 51.5 +/- 1.633268 = (49.86673, 53.13327)
+
+Given the hypothesis says the feeling toward Biden should be greater than 50, whereas the lower limit of CI is below 50, thus, based on the 95% CI, we don't have enough evidence to reject the null hypothesis. Also, there is a directionality of the stated hypothesis, so one-tailed test is more appropriate to use.
+
 ### Part C
 
 What is a 90% confidence interval around the sample statistic? Does this interval indicate support for a one-tailed test of my hypothesis (`p < 0.05` as the threshold)? Why, or why not?
+
+Following the result in part B, we can calculate the margin of error for the 90% CI = z \* SE
+
+= 1.645 \* 0.8333 = 1.3708
+
+Calculate the CI = x-bar +/- ME
+
+= 51.5 +/- 1.3708 = (50.1292, 52.8708)
+
+Given the hypothesis says the feeling toward Biden should be greater than 50, and all the CI is above 50, for a one-tailed test at 90 CI, we have evidence to accept the this hypothesis and reject the null hypothesis.
 
 ## Question 3
 
 *Points: 5*
 
 Suppose I conduct a difference of means test and obtain a t-statistic of 2.50. What does this indicate about the statistical significance of the sample mean compared to the null hypothesis?
+
+It basically indicates whether there is significant difference between my sample mean and the population mean under the null hypothesis. To determine the statistical significance, the t-statistic needs to be compared with a critical t-value that corresponds to a chosen significance level (e.g. 1%, 5%, or 10%) and degree of freedom. If the value of my t-statistic is greater than the critical t-value, then my result is statistically significant at the chosen level.
 
 ## Question 4
 
@@ -74,21 +143,52 @@ I hypothesize that fewer than 40% of registered voters approve of President Bide
 
 Based on my sample, what is a point estimate for the proportion of the population that approves of President Biden?
 
+37.9%
+
 ### Part B
 
 What is a 90% confidence interval around that estimate?
+
+Calculate the standard error = sqrt(p(1-p)/n)
+
+= sqrt(.379\*(1-.379)/720) = 0.01808003
+
+Calculate the margin of error = 1.645 \* 0.01808003
+
+= 0.02974165
+
+Calculate confidence interval = p +/- ME = 0.379 +/- 0.02974165
+
+= (0.3492, 0.4088)
 
 ### Part C
 
 What is the null hypothesis?
 
+The null hypothesis is the proportion of registered voters who approve of President Biden is greater than or equal to 40 percent.
+
 ### Part D
 
 What is the one-tailed p-value and what does it mean?
 
+z = 0.379-0.40/sqrt(0.40(1-0.40)/720
+
+z = -0.021/0.01825733
+
+z = -1.150223
+
+```{r}
+p_value <- pnorm(-1.150223)
+p_value
+```
+
+This p-value (12.5%) tells the the probability of observing a sample proportion of 37.9% or lower.
+
 ### Part E
 
 Do the data support my hypothesis? Why, or why not?
+
+Given 12.5% is higher than our 90% CI, we fail to reject the null hypothesis. So, the proportion of registered voters who approve of President Biden is greater than or equal to 40 percent.
 
 ## Question 5
 
@@ -96,6 +196,56 @@ Do the data support my hypothesis? Why, or why not?
 
 I hypothesize that in countries where Islam is the predominate religious group, women have a greater number of children on average (i.e., the total fertility rate is higher). Use the `world` dataset to test my hypothesis. State the null hypothesis and interpret what the results tell us about the null and alternative hypotheses. Be sure to show all work necessary to find the answer (i.e., you may use R to assist you, but you should show the necessary computations by hand).
 
-::: {.callout-note}
-The `world` data set can be found in `poliscidata::world`. 
+::: callout-note
+The `world` data set can be found in `poliscidata::world`.
 :::
+
+```{r}
+library(poliscidata)
+
+
+world <- world |> 
+  mutate(group_religion = ifelse(religoin == "Muslim", "Muslim", "non_Muslim"))
+
+world_religion_muslim <- world  |> 
+  filter(group_religion %in% c("Muslim"))  |> 
+  select(group_religion, fertility)
+
+world_religion_non_muslim <- world %>%
+  filter(group_religion %in% c("non_Muslim"))  |> 
+  select(group_religion, fertility)
+
+#Mean
+muslim_mean <- mean(world_religion_muslim$fertility, na.rm = TRUE)
+non_muslim_mean <- mean(world_religion_non_muslim$fertility, na.rm = TRUE)
+
+muslim_mean
+non_muslim_mean
+
+#Variance
+muslim_var <- var(world_religion_muslim$fertility, na.rm = TRUE)
+non_muslim_var <- var(world_religion_non_muslim$fertility, na.rm = TRUE)
+
+#observation
+muslim_n <- length(na.omit(world_religion_muslim$fertility))
+non_muslim_n <- length(na.omit(world_religion_non_muslim$fertility))
+
+#t-value 
+t_value <- (muslim_mean - non_muslim_mean) / sqrt((muslim_var/muslim_n) + (non_muslim_var/non_muslim_n))
+print(t_value)
+
+
+p_hat <- 46/167
+p_0_1 <-119/167
+n_religion <- 167
+
+# t-test
+z_test_stat_1 <- (p_hat - p_0_1) / sqrt(p_0_1 * (1 - p_0_1) / n_religion)
+
+# p-value
+p_value <- pnorm(z_test_stat_1)
+
+cat("One-tailed p-value:", p_value)
+```
+
+Given the p-value is extremely small, far below common significant alpha levels, we would reject the null hypothesis. This means there's strong evidence that the total fertility rate in countries where Islam is the predominant religion is higher than in countries where Islam is not the majority religious group.
