@@ -14,29 +14,69 @@ Please upload your completed assignment to the ELMs course site (under the assig
 
 **Total points: 40**
 
+```{r}
+library(tidyverse)
+library(wbstats)
+library(broom)
+library(modelsummary)
+library(marginaleffects)
+library(plotly)
+library(ggdist)
+library(poliscidata)
+library(dplyr)
+library(rio)
+```
+
 ## Question 1
 
 *Points: 10*
 
 Table 1 below reports the results from two regression models. In Model 1, in Table 1, $Y$ is regressed on $X_1$ and, in Model 2, $Y$ is regressed on both $X_1$ and $X_2$. Why might $X_1$ be statistically significant at conventional levels in Model 1 but statistically insignificant in Model 2? Be as specific as possible.
 
+It may be that in Model 2, there is an interraction effect between X1 and X2 that cannot be detected when only X1 is considered in Model 1. In this scenario, the effect of X1 on Y could either be mediated through X2 or suppressed by the presence of X2, making it statistically insignificant. Judging between either suppression or mediation depends on the underlying theory and the nature of the relationship between the two predictors. Therefore, implying a relationship between X1 and Y without fully understanding the effect of X2 may lead us to an incomplete or even bias result. Furthermore, multicollinearity could also be a factor if X1 and X2 are highly correlated. This would lead to an increase in the standard error of the coefficient, as observed with X2. To investigate the interactive effect of X1 and X2, we could conduct an interactive regression, after initially accounting for the independent effects of both X1 and X2 on Y.
+
 ## Question 2
 
 *Points: 10*
 
-Using the `censusAggregate` dataset (posted on ELMs) — which is survey data aggregated to the state level (1972-2000) — estimate a regression with `vote` as the dependent variable and the following independent variables: `nonSouth`, `edr`, and `pcthsg`. Report the results in a professionally formatted table and interpret the regression results. 
+Using the `censusAggregate` dataset (posted on ELMs) --- which is survey data aggregated to the state level (1972-2000) --- estimate a regression with `vote` as the dependent variable and the following independent variables: `nonSouth`, `edr`, and `pcthsg`. Report the results in a professionally formatted table and interpret the regression results.
 
 Also, create a figure to display the predicted values (with confidence intervals) for the effect of `pcthsg` on the turnout rate. Lastly, is it meaningful to interpret the constant term on its own? Why, or why not?
 
-::: {.callout-note}
-`vote` is the turnout rate in a state in a given year (i.e., the number of people who voted divided by the number eligible to vote). 
+::: callout-note
+`vote` is the turnout rate in a state in a given year (i.e., the number of people who voted divided by the number eligible to vote).
 
-`nonSouth` is a dummy variable equal to `0` for Southern states and a `1` for non-Southern states. 
+`nonSouth` is a dummy variable equal to `0` for Southern states and a `1` for non-Southern states.
 
-`pcthsg` is the percentage of the population in a state that graduated high school. 
+`pcthsg` is the percentage of the population in a state that graduated high school.
 
 `edr` is a dummy variable equal to `1` for states that used election-day registration and a `0` for states without election-day registration.
 :::
+
+```{r}
+census.df <-read.csv ("censusAggregate.csv")
+
+#run the model
+census <- lm(vote ~ nonSouth + edr + pcthsg, data = census.df)
+summary(census)
+
+#create the table
+modelsummary(census, 
+             coef_rename = c(nonSouth = "Southern states (dummy)",
+                             edr = "Election-day registration (dummy)", 
+                            pcthsg = "High school graduate"),
+                            statistic = c("t = {statistic}", "SE = {std.error}", "conf.int"))
+
+```
+
+The model indicates that all three predictors have a statistically significant impact on the turnout rate. The R-squared value is relatively low at 28 percent, suggesting that other variables not included in the model might better explain the turnout rate. A one percent increase in the proportion of high school graduates is associated with a 10 percent average increase in the voting rate, holding all else constant. The two dummy variables -- representing Southern states and the use of election-day registration -- demonstrate even stronger effects. The positive coefficients suggest that, compared to Southern states, non-Southern states are associated with an average increase in voter turnout of 55.5 percent, all other variables being equal. Additionally, the presence of election-day registration is linked to a higher turnout rate; states with this feature experience an average increase in voter turnout of 58 percent compared to states without it, again controlling for other factors.
+
+```{r}
+#create the predicted value for the effect of 'pcthsg' to 'vote'
+plot_predictions (census, condition = "pcthsg")
+```
+
+Interpreting the constant term in a linear regression can be meaningful, but its practicality depends on the model and the data. However, in this case, interpreting the intercept is not meaningful, as it does not generate a useful understanding of the IV and DV. For instance, stating that a state with a zero education level would have a turnout rate of 54 percent is nonsensical, as no state exists with such characteristics. This is also true when combining all the independent variables. The baseline represented by the dummy variables assigns a zero value to Southern states and states without election-day registration. We could hypothetically suggest that for any Southern state or state without election-day registration, and with the lowest education level, the starting point of the turnout rate is 54 percent. Again, this claim is implausible, as no real-world scenario matches these hypothetical conditions.
 
 ## Question 3
 
@@ -44,8 +84,32 @@ Also, create a figure to display the predicted values (with confidence intervals
 
 Using the regression results from the previous question, evaluate the null hypothesis that the effects (i.e., regression coefficients) of `nonSouth` and `pcthsg` are jointly equal to zero. Can you reject the null hypothesis? Be sure to demonstrate how you reached a definitive conclusion.
 
+```{r}
+tidy(census, conf.int = T) 
+```
+
+Yes, I can reject the null hypothesis based on the provided F-statistic and its p-values. The p-value associated with F-statistics is less than 2.2e-16, which is an extremely small number below the conventional significance level 5 percent or 1 percent. Therefore, I have very strong evidence against the null hypothesis, and stating that at least one of the independent variable in my model is not equal to zero. Also, both coefficients for nonSouth and pcthsg variables are statistically significant and not equal to zero, suggesting that we can reject the null hypothesis.
+
 ## Question 4
 
 *Points: 15*
 
 Using one of the other datasets available in the `poliscidata` package pick one dependent variable and two or more independent variables. Run a regression of the dependent variable on the independent variables. In your answer, describe why you picked the variables you did, produce a professionally formatted results table, and describe your statistical and substantive findings.
+
+```{r}
+#run the model
+obama_vote <- lm(obama2012 ~ dempct_m + union10 + attend_pct, data = poliscidata::states)
+summary(obama_vote)
+
+#create the table
+modelsummary(obama_vote, 
+             coef_rename = c(dempct_m = "mass public Dems (%)",
+                             union10 = "percent workforce unionized", 
+                            attend_pct = "attending religious service (%)"),
+                            statistic = c("t = {statistic}", "SE = {std.error}", "conf.int"))
+
+```
+
+Given that President Obama is believed to draw more support from 'left-leaning' voters and less from 'conservative' voters, I would like to test the accuracy of these hypotheses. To do this, I have selected the following variables: Obama's vote share in 2012 as the dependent variable, and three independent variables, namely, the percentage of self-identified 'Democrats', the number of unions, and the percentage of individuals attending religious services.
+
+My regression results indicate that all three predictors have a statistically significant effect on Obama's votes. A one percent increase in the proportion of Democrats in any states is associated, on average, with a 53.3 percent increase in Obama's vote share, holding all else constant. Similarly, a one percent increase in unionized workers is associated with a 53.7 percent increase in Obama's vote share on average, while controlling for other factors. Conversely, the number of people attending religious services shows a negative effect on Obama's votes. It indicates that a one percent increase in attendance at religious services is on average associated with a 57.5 percent decrease in Obama's vote share, when controlling for other factors. In a hypothetical state where there are no mass Democrats, no unions, and no church attendance, the intercept indicates that Obama's vote share would stand at 45.6 percent. The R-squared value is 57.2 percent, suggesting that our predictors moderately explain the variation in the dependent variable.
